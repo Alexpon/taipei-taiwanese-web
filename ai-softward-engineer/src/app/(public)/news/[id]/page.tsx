@@ -2,8 +2,29 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { News } from "@/types/database";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from("news")
+    .select("title")
+    .eq("id", id)
+    .eq("status", "published")
+    .single();
+
+  return {
+    title: (data as News | null)?.title ?? "最新消息",
+  };
+}
 
 export default async function NewsDetailPage({
   params,

@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import type { Page } from "@/types/database";
 import { notFound } from "next/navigation";
 
+export const metadata = { title: "關於我們" };
+
 export const revalidate = 60;
 
 export default async function AboutPage() {

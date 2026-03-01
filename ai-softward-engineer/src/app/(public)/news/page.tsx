@@ -8,6 +8,8 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
+export const metadata = { title: "最新消息" };
+
 export const revalidate = 60;
 
 export default async function NewsListPage() {

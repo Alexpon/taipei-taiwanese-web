@@ -8,6 +8,8 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
+export const metadata = { title: "活動課程" };
+
 export const revalidate = 60;
 
 export default async function EventsListPage() {

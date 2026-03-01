@@ -3,8 +3,29 @@ import { createClient } from "@/lib/supabase/server";
 import type { Event } from "@/types/database";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  const { data } = await supabase
+    .from("events")
+    .select("title")
+    .eq("id", id)
+    .eq("status", "published")
+    .single();
+
+  return {
+    title: (data as Event | null)?.title ?? "活動課程",
+  };
+}
 
 export default async function EventDetailPage({
   params,

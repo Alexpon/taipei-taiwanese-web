@@ -13,8 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "台北市台灣語協會",
+  title: {
+    template: "%s | 台北市台灣語協會",
+    default: "台北市台灣語協會",
+  },
   description: "推廣台灣語言文化教育，傳承母語之美",
+  openGraph: {
+    locale: "zh_TW",
+  },
 };
 
 export default function RootLayout({
