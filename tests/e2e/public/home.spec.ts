@@ -4,9 +4,9 @@ test.describe("Home Page", () => {
   test("loads with hero section and association name", async ({ page }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: "台北市台灣語協會" })
+      page.getByRole("heading", { name: "台北市台灣語協會" }).first()
     ).toBeVisible();
-    await expect(page.getByText("推廣台灣語言文化教育")).toBeVisible();
+    await expect(page.getByText("推廣台灣語言文化教育").first()).toBeVisible();
   });
 
   test("has latest news section", async ({ page }) => {
