@@ -13,7 +13,7 @@ test.describe("Admin Dashboard", () => {
     await expect(page.getByText("新增消息")).toBeVisible();
     await expect(page.getByText("新增活動")).toBeVisible();
     await expect(page.getByText("編輯頁面")).toBeVisible();
-    await expect(page.getByText("媒體庫")).toBeVisible();
+    await expect(page.getByRole("main").getByText("媒體庫")).toBeVisible();
   });
 
   test("quick link navigates to news creation", async ({ page }) => {

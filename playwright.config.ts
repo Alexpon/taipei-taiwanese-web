@@ -23,6 +23,7 @@ export default defineConfig({
         storageState: "tests/e2e/.auth/admin.json",
       },
       dependencies: ["setup"],
+      testMatch: /\/admin\//,
     },
     {
       name: "chromium-no-auth",

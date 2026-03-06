@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Admin Events CRUD", () => {
   test("events list page loads", async ({ page }) => {
     await page.goto("/admin/events");
-    await expect(page.getByRole("heading", { name: "活動課程" })).toBeVisible();
+    await expect(page.getByRole("main").getByRole("heading", { name: "活動管理" })).toBeVisible();
     await expect(
       page.getByRole("link", { name: "新增活動" })
     ).toBeVisible();
@@ -18,7 +18,7 @@ test.describe("Admin Events CRUD", () => {
     await editor.click();
     await editor.pressSequentially("Test event description");
 
-    await page.getByLabel("活動日期").fill("2026-12-25T10:00");
+    await page.getByLabel("活動日期").fill("2026-12-25");
     await page.getByLabel("地點").fill("Taipei 101");
 
     await page.getByRole("button", { name: "儲存" }).click();
@@ -32,7 +32,7 @@ test.describe("Admin Events CRUD", () => {
     const editor = page.locator(".tiptap");
     await editor.click();
     await editor.pressSequentially("Delete me");
-    await page.getByLabel("活動日期").fill("2026-12-31T10:00");
+    await page.getByLabel("活動日期").fill("2026-12-31");
     await page.getByLabel("地點").fill("Nowhere");
     await page.getByRole("button", { name: "儲存" }).click();
     await expect(page).toHaveURL("/admin/events", { timeout: 10000 });
