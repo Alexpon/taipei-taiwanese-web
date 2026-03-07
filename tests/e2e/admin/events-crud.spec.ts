@@ -45,4 +45,43 @@ test.describe("Admin Events CRUD", () => {
     await page.reload();
     await expect(page.getByText(uniqueTitle)).not.toBeVisible();
   });
+
+  test("edit an existing event", async ({ page }) => {
+    // First create an event
+    await page.goto("/admin/events/new");
+    const uniqueTitle = "E2E Edit Event " + Date.now();
+    await page.getByLabel("標題").fill(uniqueTitle);
+    const editor = page.locator(".tiptap");
+    await editor.click();
+    await editor.pressSequentially("Original event description");
+    await page.getByLabel("活動日期").fill("2026-12-20");
+    await page.getByLabel("地點").fill("Original Location");
+    await page.getByRole("button", { name: "儲存" }).click();
+    await expect(page).toHaveURL("/admin/events", { timeout: 10000 });
+
+    // Click edit on the created item
+    const row = page.locator("tr", { hasText: uniqueTitle });
+    await row.getByRole("link", { name: "編輯" }).click();
+    await expect(page.getByRole("heading", { name: "編輯活動" })).toBeVisible();
+
+    // Verify form is populated
+    await expect(page.getByLabel("標題")).toHaveValue(uniqueTitle, { timeout: 10000 });
+    await expect(page.getByLabel("地點")).toHaveValue("Original Location");
+
+    // Modify the title and location
+    const updatedTitle = "E2E Updated Event " + Date.now();
+    await page.getByLabel("標題").fill(updatedTitle);
+    await page.getByLabel("地點").fill("Updated Location");
+    await page.getByRole("button", { name: "儲存" }).click();
+    await expect(page).toHaveURL("/admin/events", { timeout: 10000 });
+
+    // Verify updated title appears in list
+    await expect(page.getByText(updatedTitle)).toBeVisible();
+
+    // Cleanup: delete the item
+    const updatedRow = page.locator("tr", { hasText: updatedTitle });
+    page.on("dialog", (dialog) => dialog.accept());
+    await updatedRow.getByRole("button", { name: "刪除" }).click();
+    await page.waitForTimeout(2000);
+  });
 });
