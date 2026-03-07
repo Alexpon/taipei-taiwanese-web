@@ -44,23 +44,23 @@ test.describe("Admin Media", () => {
 
     const fileInput = page.locator('input[type="file"]');
     await fileInput.setInputFiles(testImagePath);
-    await page.waitForTimeout(3000);
-    await page.reload();
+
+    // Wait for upload to complete and card to appear
+    const mediaCards = page.locator('[class*="grid"] > div');
+    await expect(mediaCards.first()).toBeVisible({ timeout: 10000 });
 
     // Count images before delete
-    const cardsBefore = page.locator('[class*="grid"] > div');
-    const countBefore = await cardsBefore.count();
+    const countBefore = await mediaCards.count();
     expect(countBefore).toBeGreaterThan(0);
 
     // Accept the confirm dialog and click delete on first card
     page.on("dialog", (dialog) => dialog.accept());
-    await cardsBefore.first().getByRole("button", { name: "刪除" }).click();
+    await mediaCards.first().getByRole("button", { name: "刪除" }).click();
 
+    // Wait for the list to refresh (loadFiles is called after delete)
     await page.waitForTimeout(2000);
-    await page.reload();
 
-    const cardsAfter = page.locator('[class*="grid"] > div');
-    const countAfter = await cardsAfter.count();
+    const countAfter = await mediaCards.count();
     expect(countAfter).toBeLessThan(countBefore);
 
     fs.unlinkSync(testImagePath);

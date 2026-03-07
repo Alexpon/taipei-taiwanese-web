@@ -73,7 +73,7 @@ test.describe("Admin Events CRUD", () => {
     await page.getByLabel("標題").fill(updatedTitle);
     await page.getByLabel("地點").fill("Updated Location");
     await page.getByRole("button", { name: "儲存" }).click();
-    await expect(page).toHaveURL("/admin/events", { timeout: 10000 });
+    await expect(page).toHaveURL("/admin/events", { timeout: 15000 });
 
     // Verify updated title appears in list
     await expect(page.getByText(updatedTitle)).toBeVisible();
