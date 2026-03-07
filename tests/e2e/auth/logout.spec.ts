@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const ADMIN_EMAIL = process.env.TEST_ADMIN_EMAIL || "admin@example.com";
 const ADMIN_PASSWORD = process.env.TEST_ADMIN_PASSWORD || "admin123";
+const authFile = "tests/e2e/.auth/admin.json";
 
 test.describe("Admin Logout", () => {
   test("logout button redirects to login page", async ({ page }) => {
@@ -17,5 +18,13 @@ test.describe("Admin Logout", () => {
 
     await expect(page).toHaveURL(/\/admin\/login/, { timeout: 10000 });
     await expect(page.getByText("管理員登入")).toBeVisible();
+
+    // Re-login and restore auth state so other tests aren't affected
+    // (Supabase signOut revokes the refresh token globally for this user)
+    await page.getByLabel("電子郵件").fill(ADMIN_EMAIL);
+    await page.getByLabel("密碼").fill(ADMIN_PASSWORD);
+    await page.getByRole("button", { name: "登入" }).click();
+    await expect(page).toHaveURL("/admin", { timeout: 10000 });
+    await page.context().storageState({ path: authFile });
   });
 });
