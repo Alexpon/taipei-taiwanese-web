@@ -11,7 +11,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:all": "vitest run && playwright test"
+    "test:all": "vitest run && playwright test",
+    "test:perf": "playwright test --project=performance",
+    "test:bundle": "next build && vitest run tests/unit/performance"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

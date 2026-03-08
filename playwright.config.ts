@@ -30,6 +30,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
       testMatch: /\/(auth|public)\//,
     },
+    {
+      name: "performance",
+      use: { ...devices["Desktop Chrome"] },
+      testMatch: /\/performance\//,
+    },
   ],
   webServer: {
     command: "npm run dev",
