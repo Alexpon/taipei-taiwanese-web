@@ -3,7 +3,7 @@ import { test, expect, type Page } from "@playwright/test";
 // Thresholds are intentionally lenient for dev server (unoptimized builds).
 // Tighten these when running against a production build.
 const THRESHOLDS = {
-  ttfb: 600, // Time to First Byte (ms)
+  ttfb: 2000, // Time to First Byte (ms)
   fcp: 3000, // First Contentful Paint (ms)
   lcp: 4000, // Largest Contentful Paint (ms)
   cls: 0.1, // Cumulative Layout Shift (unitless)

@@ -61,15 +61,16 @@ describe("Auth Server Actions", () => {
       });
     });
 
-    it("redirects to /admin on success", async () => {
+    it("returns undefined on success (client handles redirect)", async () => {
       const fd = makeFormData({
         email: "user@example.com",
         password: "secret123",
       });
 
-      await login(fd);
+      const result = await login(fd);
 
-      expect(redirect).toHaveBeenCalledWith("/admin");
+      expect(result).toBeUndefined();
+      expect(redirect).not.toHaveBeenCalled();
     });
 
     it("returns error message on failure and does NOT redirect", async () => {

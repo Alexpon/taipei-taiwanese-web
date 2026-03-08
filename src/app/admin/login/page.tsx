@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { login } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import {
 export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   function handleSubmit(formData: FormData) {
     setError(null);
@@ -22,6 +24,8 @@ export default function AdminLoginPage() {
       const result = await login(formData);
       if (result?.error) {
         setError(result.error);
+      } else {
+        router.push("/admin");
       }
     });
   }
